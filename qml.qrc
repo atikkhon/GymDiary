@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>ui/LabelAndOptions.qml</file>
+        <file>ui/FiveButtons.qml</file>
+        <file>ui/pictures/quads.png</file>
+        <file>ui/pictures/deadlift.png</file>
+        <file>ui/pictures/paralets.png</file>
+        <file>ui/pictures/pullups.png</file>
+    </qresource>
+</RCC>
