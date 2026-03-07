@@ -4,6 +4,10 @@ Rectangle
 {
 
     property double thisHeight: thisHeight
+
+    property alias buttonCheckable: buttons.buttonCheckable
+    property alias clickEnable: buttons.clickEnable
+
     property alias topAnchors: label_and_options.anchors.top
     property alias topMarginAnchors: label_and_options.anchors.topMargin
     property alias textLabel: label.text

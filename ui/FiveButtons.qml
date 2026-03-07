@@ -16,6 +16,10 @@ RowLayout
     property alias fourthButtonSource: fourthImg.source
     property alias fourthButtonText: fourthButton.text
 
+    property bool buttonCheckable: false
+    property bool clickEnable: false
+
+
     id: buttonsRow
     spacing: 5
     anchors
@@ -26,13 +30,28 @@ RowLayout
         rightMargin: parent.width * 0.10
     }
 
+    ButtonGroup {
+        id: myGroup
+        exclusive: true
+    }
+
     Button
     {
         id: firstButton
+        ButtonGroup.group: myGroup
         Layout.fillHeight: true
         Layout.fillWidth: true
         Layout.topMargin: 5
         Layout.bottomMargin: 5
+        checkable: buttonCheckable
+        onClicked: {if(clickEnable){console.log(`Ты сделал ${text} повторений`)}}
+        Rectangle
+        {
+            anchors.fill: parent
+            color: "transparent" // Прозрачный фон
+            border.width: 3
+            border.color: {parent.checked ? "green" : "transparent"}
+        }
         Image {
             id: firstImg
             anchors.centerIn: parent
@@ -43,10 +62,20 @@ RowLayout
     Button
     {
         id: secondButton
+        ButtonGroup.group: myGroup
         Layout.fillHeight: true
         Layout.fillWidth: true
         Layout.topMargin: 5
         Layout.bottomMargin: 5
+        checkable: buttonCheckable
+        onClicked: {if(clickEnable){console.log(`Ты сделал ${text} повторений`)}}
+        Rectangle
+        {
+            anchors.fill: parent
+            color: "transparent" // Прозрачный фон
+            border.width: 3
+            border.color: {parent.checked ? "green" : "transparent"}
+        }
         Image {
             id: secondImg
             anchors.centerIn: parent
@@ -57,10 +86,20 @@ RowLayout
     Button
     {
         id: thirdButton
+        ButtonGroup.group: myGroup
         Layout.fillHeight: true
         Layout.fillWidth: true
         Layout.topMargin: 5
         Layout.bottomMargin: 5
+        checkable: buttonCheckable
+        onClicked: {if(clickEnable){console.log(`Ты сделал ${text} повторений`)}}
+        Rectangle
+        {
+            anchors.fill: parent
+            color: "transparent" // Прозрачный фон
+            border.width: 3
+            border.color: {parent.checked ? "green" : "transparent"}
+        }
         Image {
             id: thirdImg
             anchors.centerIn: parent
@@ -71,10 +110,20 @@ RowLayout
     Button
     {
         id: fourthButton
+        ButtonGroup.group: myGroup
         Layout.fillHeight: true
         Layout.fillWidth: true
         Layout.topMargin: 5
         Layout.bottomMargin: 5
+        checkable: buttonCheckable
+        onClicked: {if(clickEnable){console.log(`Ты сделал ${text} повторений`)}}
+        Rectangle
+        {
+            anchors.fill: parent
+            color: "transparent" // Прозрачный фон
+            border.width: 3
+            border.color: {parent.checked ? "green" : "transparent"}
+        }
         Image {
             id: fourthImg
             anchors.centerIn: parent
