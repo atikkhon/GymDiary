@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Window 2.15
 import "ui"
+import TableModel
 
 Window {
     width: 366
@@ -19,7 +20,6 @@ Window {
     {
         id: one
         buttonCheckable: true
-        clickEnable: false
         thisHeight: parent.height * height_koeff
         topAnchors: parent.top
         topMarginAnchors: marge_value
@@ -44,7 +44,6 @@ Window {
     {
         id: two
         buttonCheckable: true
-        clickEnable: false
         thisHeight: parent.height * height_koeff
         topAnchors: one.top
         topMarginAnchors: marge_value + thisHeight
@@ -64,7 +63,6 @@ Window {
     LabelAndOptions
     {
         id: three
-        buttonCheckable: false
         clickEnable: true
         thisHeight: parent.height * height_koeff
         topAnchors: two.top
@@ -79,6 +77,11 @@ Window {
             reps = reps_
             console.log(`${typeOfExercsise}, ${weight}, ${reps}`)
         }
+    }
+
+    TableModel
+    {
+
     }
 
 }
