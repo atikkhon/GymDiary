@@ -2,26 +2,41 @@
 
 TableModel::TableModel(QObject *parent) : QAbstractTableModel(parent)
 {
+    table.append({"Дата", "Упражнение", "Доп. вес", "Повторы"});
 
 }
 
 int TableModel::rowCount(const QModelIndex &) const
 {
-    return 200;
+    return table.size(); //number of rows
 }
 
 int TableModel::columnCount(const QModelIndex &) const
 {
-    return 4;
+    return table.at(0).size(); //number of columns
 }
 
 QVariant TableModel::data(const QModelIndex &index, int role) const
 {
-    switch (role) {
-    case Qt::DisplayRole:
-        return QString("%1, %2").arg(index.column()).arg(index.row());
-    default:
-        break;
+    switch(role)
+    {
+        case TableDataRole:
+        {
+            return table.at(index.row()).at(index.column());
+        }
+        case HeadingRole:
+        {
+            if (index.row()==0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        default:
+            break;
     }
 
     return QVariant();
@@ -29,5 +44,8 @@ QVariant TableModel::data(const QModelIndex &index, int role) const
 
 QHash<int, QByteArray> TableModel::roleNames() const
 {
-    return { {Qt::DisplayRole, "display"} };
+    QHash<int,QByteArray> roles;
+    roles[TableDataRole] = "tabledata";
+    roles[HeadingRole] = "heading";
+    return roles;
 }

@@ -9,6 +9,12 @@ class TableModel : public QAbstractTableModel
 {
     Q_OBJECT
     QML_ELEMENT
+    enum TableRoles
+    {
+        TableDataRole = Qt::UserRole + 1,
+        HeadingRole
+    };
+
 public:
     explicit TableModel(QObject *parent = nullptr);
     int rowCount(const QModelIndex & = QModelIndex()) const override;
@@ -20,6 +26,8 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
 signals:
+private:
+    QVector<QVector<QString>> table;
 };
 
 #endif // TABLEMODEL_H

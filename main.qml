@@ -79,9 +79,38 @@ Window {
         }
     }
 
-    TableModel
+    Rectangle
     {
+        id: tablemodelframe
+        border.color: "blue"
+        anchors
+        {
+            top: three.bottom
+            topMargin: 50
+            bottom: parent.bottom
+            left: parent.left
+            right: parent.right
+        }
+        TableView
+        {
+            anchors.fill: parent
+            columnSpacing: 3
+            rowSpacing: 3
+            clip: true
 
+            model: TableModel {}
+
+            delegate: Rectangle
+            {
+                implicitHeight: 40
+                implicitWidth: 90
+                border.color: "red"
+                Text {
+                    text: tabledata
+                    anchors.centerIn: parent
+                }
+            }
+        }
     }
 
 }
