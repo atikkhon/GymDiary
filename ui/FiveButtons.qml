@@ -4,20 +4,23 @@ import QtQuick.Layouts
 
 RowLayout
 {
-    property alias firstButtonSource: firstImg.source
+    property alias firstButtonIconSource: firstButton.icon.source
     property alias firstButtonText: firstButton.text
 
-    property alias secondButtonSource: secondImg.source
+    property alias secondButtonIconSource: secondButton.icon.source
     property alias secondButtonText: secondButton.text
 
-    property alias thirdButtonSource: thirdImg.source
+    property alias thirdButtonIconSource: thirdButton.icon.source
     property alias thirdButtonText: thirdButton.text
 
-    property alias fourthButtonSource: fourthImg.source
+    property alias fourthButtonIconSource: fourthButton.icon.source
     property alias fourthButtonText: fourthButton.text
 
     property bool buttonCheckable: false
     property bool clickEnable: false
+    property string buttonDisplayType: buttonDisplayType
+
+    signal checkedText(string text)
 
 
     id: buttonsRow
@@ -43,20 +46,29 @@ RowLayout
         Layout.fillWidth: true
         Layout.topMargin: 5
         Layout.bottomMargin: 5
+        icon.height: parent.height * 0.85
+        icon.color: "black"
+        display: buttonDisplayType
         checkable: buttonCheckable
-        onClicked: {if(clickEnable){console.log(`Ты сделал ${text} повторений`)}}
+        onClicked: {
+            if(clickEnable)
+            {
+                checkedText(text)
+            }
+        }
+
+        onToggled: {
+            if (checked) {
+                checkedText(text)
+            }
+        }
+
         Rectangle
         {
             anchors.fill: parent
             color: "transparent" // Прозрачный фон
             border.width: 3
             border.color: {parent.checked ? "green" : "transparent"}
-        }
-        Image {
-            id: firstImg
-            anchors.centerIn: parent
-            height: parent.height * 0.85
-            fillMode: Image.PreserveAspectFit
         }
     }
     Button
@@ -67,20 +79,29 @@ RowLayout
         Layout.fillWidth: true
         Layout.topMargin: 5
         Layout.bottomMargin: 5
+        icon.height: parent.height * 0.85
+        icon.color: "black"
+        display: buttonDisplayType
         checkable: buttonCheckable
-        onClicked: {if(clickEnable){console.log(`Ты сделал ${text} повторений`)}}
+        onClicked: {
+            if(clickEnable)
+            {
+                checkedText(text)
+            }
+        }
+
+        onToggled: {
+            if (checked) {
+                checkedText(text)
+            }
+        }
+
         Rectangle
         {
             anchors.fill: parent
             color: "transparent" // Прозрачный фон
             border.width: 3
             border.color: {parent.checked ? "green" : "transparent"}
-        }
-        Image {
-            id: secondImg
-            anchors.centerIn: parent
-            height: parent.height * 0.85
-            fillMode: Image.PreserveAspectFit
         }
     }
     Button
@@ -91,20 +112,29 @@ RowLayout
         Layout.fillWidth: true
         Layout.topMargin: 5
         Layout.bottomMargin: 5
+        display: buttonDisplayType
         checkable: buttonCheckable
-        onClicked: {if(clickEnable){console.log(`Ты сделал ${text} повторений`)}}
+        icon.height: parent.height * 0.85
+        icon.color: "black"
+        onClicked: {
+            if(clickEnable)
+            {
+                checkedText(text)
+            }
+        }
+
+        onToggled: {
+            if (checked) {
+                checkedText(text)
+            }
+        }
+
         Rectangle
         {
             anchors.fill: parent
             color: "transparent" // Прозрачный фон
             border.width: 3
             border.color: {parent.checked ? "green" : "transparent"}
-        }
-        Image {
-            id: thirdImg
-            anchors.centerIn: parent
-            height: parent.height * 0.85
-            fillMode: Image.PreserveAspectFit
         }
     }
     Button
@@ -115,20 +145,29 @@ RowLayout
         Layout.fillWidth: true
         Layout.topMargin: 5
         Layout.bottomMargin: 5
+        icon.height: parent.height * 0.85
+        icon.color: "black"
+        display: buttonDisplayType
         checkable: buttonCheckable
-        onClicked: {if(clickEnable){console.log(`Ты сделал ${text} повторений`)}}
+        onClicked: {
+            if(clickEnable)
+            {
+                checkedText(text)
+            }
+        }
+
+        onToggled: {
+            if (checked) {
+                checkedText(text)
+            }
+        }
+
         Rectangle
         {
             anchors.fill: parent
             color: "transparent" // Прозрачный фон
             border.width: 3
             border.color: {parent.checked ? "green" : "transparent"}
-        }
-        Image {
-            id: fourthImg
-            anchors.centerIn: parent
-            height: parent.height * 0.85
-            fillMode: Image.PreserveAspectFit
         }
     }
 }

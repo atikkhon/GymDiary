@@ -11,6 +11,10 @@ Window {
     property int marge_value: 10
     property double height_koeff: 0.1
 
+    property string typeOfExercsise
+    property string weight
+    property string reps
+
     LabelAndOptions
     {
         id: one
@@ -20,14 +24,20 @@ Window {
         topAnchors: parent.top
         topMarginAnchors: marge_value
         textLabel: "Выбор упражнений"
-        firstButtonSource: "qrc:/ui/pictures/pullups.png"
+        buttonDisplayType: "IconOnly"
+        firstButtonIconSource: "qrc:/ui/pictures/pullups.png"
         firstButtonText: "Подтягивания"
-        secondButtonSource: "qrc:/ui/pictures/paralets.png"
+        secondButtonIconSource: "qrc:/ui/pictures/paralets.png"
         secondButtonText: "Брусья"
-        thirdButtonSource: "qrc:/ui/pictures/quads.png"
+        thirdButtonIconSource: "qrc:/ui/pictures/quads.png"
         thirdButtonText: "Присед"
-        fourthButtonSource: "qrc:/ui/pictures/deadlift.png"
+        fourthButtonIconSource: "qrc:/ui/pictures/deadlift.png"
         fourthButtonText: "Становая"
+
+        onCheckedText: (TypeOfExercsise_) =>
+        {
+            typeOfExercsise = TypeOfExercsise_
+        }
     }
 
     LabelAndOptions
@@ -38,11 +48,17 @@ Window {
         thisHeight: parent.height * height_koeff
         topAnchors: one.top
         topMarginAnchors: marge_value + thisHeight
+        buttonDisplayType: "TextOnly"
         textLabel: "Доп. вес"
         firstButtonText: "5 кг"
         secondButtonText: "7.5 кг"
         thirdButtonText: "10 кг"
         fourthButtonText: "12.5 кг"
+
+        onCheckedText: (weight_) =>
+        {
+            weight = weight_
+        }
     }
 
     LabelAndOptions
@@ -53,11 +69,16 @@ Window {
         thisHeight: parent.height * height_koeff
         topAnchors: two.top
         topMarginAnchors: marge_value + thisHeight
+        buttonDisplayType: "TextOnly"
         textLabel: "Повторы"
         firstButtonText: "10"
         secondButtonText: "11"
         thirdButtonText: "12"
         fourthButtonText: "13"
+        onCheckedText: (reps_) => {
+            reps = reps_
+            console.log(`${typeOfExercsise}, ${weight}, ${reps}`)
+        }
     }
 
 }

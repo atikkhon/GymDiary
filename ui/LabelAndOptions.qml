@@ -2,27 +2,29 @@ import QtQuick 2.15
 
 Rectangle
 {
-
     property double thisHeight: thisHeight
 
     property alias buttonCheckable: buttons.buttonCheckable
     property alias clickEnable: buttons.clickEnable
+    property alias buttonDisplayType: buttons.buttonDisplayType
 
     property alias topAnchors: label_and_options.anchors.top
     property alias topMarginAnchors: label_and_options.anchors.topMargin
     property alias textLabel: label.text
 
-    property alias firstButtonSource: buttons.firstButtonSource
+    property alias firstButtonIconSource: buttons.firstButtonIconSource
     property alias firstButtonText: buttons.firstButtonText
 
-    property alias secondButtonSource: buttons.secondButtonSource
+    property alias secondButtonIconSource: buttons.secondButtonIconSource
     property alias secondButtonText: buttons.secondButtonText
 
-    property alias thirdButtonSource: buttons.thirdButtonSource
+    property alias thirdButtonIconSource: buttons.thirdButtonIconSource
     property alias thirdButtonText: buttons.thirdButtonText
 
-    property alias fourthButtonSource: buttons.fourthButtonSource
+    property alias fourthButtonIconSource: buttons.fourthButtonIconSource
     property alias fourthButtonText: buttons.fourthButtonText
+
+    signal checkedText(string text)
 
 
     id: label_and_options
@@ -62,6 +64,10 @@ Rectangle
         FiveButtons
         {
             id: buttons
+
+            onCheckedText: (buttonText) => {
+                label_and_options.checkedText(buttonText)
+            }
         }
     }
 }
