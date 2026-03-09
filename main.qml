@@ -75,6 +75,7 @@ Window {
         fourthButtonText: "13"
         onCheckedText: (reps_) => {
             reps = reps_
+            tableModel.setExerciseType(typeOfExercsise, weight, reps)
             console.log(`${typeOfExercsise}, ${weight}, ${reps}`)
         }
     }
@@ -91,14 +92,20 @@ Window {
             left: parent.left
             right: parent.right
         }
+
+        TableModel
+        {
+            id: tableModel
+        }
+
         TableView
         {
             anchors.fill: parent
-            columnSpacing: 3
+            model: tableModel
+            anchors.horizontalCenter: parent.horizontalCenter
+            columnSpacing: 1
             rowSpacing: 3
             clip: true
-
-            model: TableModel {}
 
             delegate: Rectangle
             {

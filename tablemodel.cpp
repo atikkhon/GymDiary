@@ -6,6 +6,15 @@ TableModel::TableModel(QObject *parent) : QAbstractTableModel(parent)
 
 }
 
+void TableModel::setExerciseType(const QString &text1, const QString &text2, const QString &text3)
+{
+    int newRow = table.size();
+
+    beginInsertRows(QModelIndex(), newRow, newRow);
+    table.append({"10.11", text1, text2, text3});
+    endInsertRows();
+}
+
 int TableModel::rowCount(const QModelIndex &) const
 {
     return table.size(); //number of rows

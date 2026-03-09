@@ -22,7 +22,6 @@ RowLayout
 
     signal checkedText(string text)
 
-
     id: buttonsRow
     spacing: 5
     anchors
@@ -46,9 +45,10 @@ RowLayout
         Layout.fillWidth: true
         Layout.topMargin: 5
         Layout.bottomMargin: 5
-        icon.height: parent.height * 0.85
-        icon.color: "black"
         display: buttonDisplayType
+        icon.height: parent.height * 0.65
+        icon.width: 40
+        icon.color: "black"
         checkable: buttonCheckable
         onClicked: {
             if(clickEnable)
@@ -79,7 +79,8 @@ RowLayout
         Layout.fillWidth: true
         Layout.topMargin: 5
         Layout.bottomMargin: 5
-        icon.height: parent.height * 0.85
+        icon.height: parent.height * 0.65
+        icon.width: 40
         icon.color: "black"
         display: buttonDisplayType
         checkable: buttonCheckable
@@ -114,7 +115,8 @@ RowLayout
         Layout.bottomMargin: 5
         display: buttonDisplayType
         checkable: buttonCheckable
-        icon.height: parent.height * 0.85
+        icon.height: parent.height * 0.65
+        icon.width: 40
         icon.color: "black"
         onClicked: {
             if(clickEnable)
@@ -145,7 +147,8 @@ RowLayout
         Layout.fillWidth: true
         Layout.topMargin: 5
         Layout.bottomMargin: 5
-        icon.height: parent.height * 0.85
+        icon.height: parent.height * 0.65
+        icon.width: 40
         icon.color: "black"
         display: buttonDisplayType
         checkable: buttonCheckable

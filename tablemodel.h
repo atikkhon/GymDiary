@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QAbstractTableModel>
 
+
 class TableModel : public QAbstractTableModel
 {
     Q_OBJECT
@@ -17,6 +18,9 @@ class TableModel : public QAbstractTableModel
 
 public:
     explicit TableModel(QObject *parent = nullptr);
+
+    Q_INVOKABLE void setExerciseType(const QString &text1, const QString &text2, const QString &text3);
+
     int rowCount(const QModelIndex & = QModelIndex()) const override;
 
     int columnCount(const QModelIndex & = QModelIndex()) const override;
