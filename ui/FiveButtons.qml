@@ -37,14 +37,15 @@ RowLayout
         exclusive: true
     }
 
+
     Button
     {
         id: firstButton
-        ButtonGroup.group: myGroup
         Layout.fillHeight: true
         Layout.fillWidth: true
         Layout.topMargin: 5
         Layout.bottomMargin: 5
+        ButtonGroup.group: myGroup
         display: buttonDisplayType
         icon.height: parent.height * 0.65
         icon.width: 40

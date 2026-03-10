@@ -6,6 +6,7 @@ QT += quick
 
 SOURCES += \
         main.cpp \
+        repsmodel.cpp \
         tablemodel.cpp
 
 RESOURCES += qml.qrc
@@ -22,4 +23,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    repsmodel.h \
     tablemodel.h

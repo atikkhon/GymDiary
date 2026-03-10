@@ -7,5 +7,9 @@
         <file>ui/pictures/deadlift.png</file>
         <file>ui/pictures/paralets.png</file>
         <file>ui/pictures/pullups.png</file>
+        <file>ui/LeftButton.qml</file>
+        <file>ui/RightButton.qml</file>
+        <file>ui/TableViewScreen.qml</file>
+        <file>ui/MainScreen.qml</file>
     </qresource>
 </RCC>

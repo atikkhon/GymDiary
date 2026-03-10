@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <tablemodel.h>
+#include <repsmodel.h>
 
 
 int main(int argc, char *argv[])
@@ -11,6 +12,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     qmlRegisterType<TableModel>("TableModel", 0, 1, "TableModel");
+    qmlRegisterType<RepsModel>("RepsModel", 0, 1, "RepsModel");
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));

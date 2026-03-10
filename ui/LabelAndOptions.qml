@@ -61,10 +61,12 @@ Rectangle
             left: parent.left
         }
 
+        LeftButton { }
+        RightButton { }
+
         FiveButtons
         {
             id: buttons
-
             onCheckedText: (buttonText) => {
                 label_and_options.checkedText(buttonText)
             }
