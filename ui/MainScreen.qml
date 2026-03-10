@@ -43,10 +43,10 @@ Item {
         topMarginAnchors: marge_value + thisHeight
         buttonDisplayType: "TextOnly"
         textLabel: "Доп. вес"
-        firstButtonText: repsModel.visibleItems[]
-        secondButtonText: repsModel.visibleItems[]
-        thirdButtonText: repsModel.visibleItems[]
-        fourthButtonText: repsModel.visibleItems[]
+        firstButtonText: "5 кг"
+        secondButtonText: "7.5 кг"
+        thirdButtonText: "10 кг"
+        fourthButtonText: "12.5 кг"
 
         onCheckedText: (weight_) =>
         {
@@ -63,10 +63,10 @@ Item {
         topMarginAnchors: marge_value + thisHeight
         buttonDisplayType: "TextOnly"
         textLabel: "Повторы"
-        firstButtonText: "10"
-        secondButtonText: "11"
-        thirdButtonText: "12"
-        fourthButtonText: "13"
+        firstButtonText: repsModel.visibleItems[0]
+        secondButtonText: repsModel.visibleItems[1]
+        thirdButtonText: repsModel.visibleItems[2]
+        fourthButtonText: repsModel.visibleItems[3]
         onCheckedText: (reps_) => {
             reps = reps_
             tableModel.setExerciseType(typeOfExercsise, weight, reps)

@@ -30,7 +30,7 @@ void RepsModel::next()
 
 void RepsModel::prev()
 {
-    if(index < 0)
+    if(index > 0)
     {
         index -= 1;
         emit visibleItemsChanged();

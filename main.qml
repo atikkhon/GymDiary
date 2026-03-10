@@ -10,7 +10,7 @@ Window {
     width: 366
     height: 814
     visible: true
-    title: qsTr("Hello World")
+    title: qsTr("Gym Diary")
 
     TableModel
     {
