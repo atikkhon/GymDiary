@@ -1,6 +1,4 @@
 #include "repsmodel.h"
-#include <QDebug>
-
 
 RepsModel::RepsModel(QObject *parent) : QObject{parent}
 {

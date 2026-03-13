@@ -3,7 +3,6 @@
 TableModel::TableModel(QObject *parent) : QAbstractTableModel(parent)
 {
     table.append({"Дата", "Упражнение", "Доп. вес", "Повторы"});
-
 }
 
 void TableModel::setExerciseType(const QString &text1, const QString &text2, const QString &text3)
@@ -13,6 +12,18 @@ void TableModel::setExerciseType(const QString &text1, const QString &text2, con
     beginInsertRows(QModelIndex(), newRow, newRow);
     table.append({"10.11", text1, text2, text3});
     endInsertRows();
+    saveToCsv({"10.11" ,text1, text2, text3});
+}
+
+void TableModel::saveToCsv(const QStringList &text)
+{
+    QFile CSVFile("/home/atikkhon/myqtprojects/MyGymDairy/database/GymDiary.csv");
+    if(!CSVFile.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
+        return;
+    qDebug() << CSVFile.exists();
+    QTextStream Stream(&CSVFile);
+    Stream << text.join(",") << "\n"; //Stream << text[0] << "," << text[1] << "," и т д
+    CSVFile.close();
 }
 
 int TableModel::rowCount(const QModelIndex &) const

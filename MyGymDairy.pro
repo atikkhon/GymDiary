@@ -25,3 +25,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     repsmodel.h \
     tablemodel.h
+
+DISTFILES += \
+    database/GymDiary.csv

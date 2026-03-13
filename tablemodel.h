@@ -4,6 +4,9 @@
 #include <qqml.h>
 #include <QObject>
 #include <QAbstractTableModel>
+#include <QFile>
+#include <QTextStream>
+#include <QtCore>
 
 
 class TableModel : public QAbstractTableModel
@@ -32,6 +35,7 @@ public:
 signals:
 private:
     QVector<QVector<QString>> table;
+    void saveToCsv(const QStringList &text);
 };
 
 #endif // TABLEMODEL_H
