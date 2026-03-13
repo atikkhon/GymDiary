@@ -2,6 +2,8 @@ import QtQuick 2.15
 
 Rectangle
 {
+    signal rightClicked()
+
     id: rightButton
     color: "black"
     anchors
@@ -21,8 +23,7 @@ Rectangle
         anchors.fill: parent
 
         onClicked: {
-            console.log("Вправо")
-            repsModel.next()
+            parent.rightClicked()
         }
     }
 

@@ -24,6 +24,8 @@ Rectangle
     property alias fourthButtonIconSource: buttons.fourthButtonIconSource
     property alias fourthButtonText: buttons.fourthButtonText
 
+    signal leftClicked()
+    signal rightClicked()
     signal checkedText(string text)
 
 
@@ -61,8 +63,17 @@ Rectangle
             left: parent.left
         }
 
-        LeftButton { }
-        RightButton { }
+        LeftButton
+        {
+            id: leftButton
+            onLeftClicked: label_and_options.leftClicked()
+        }
+
+        RightButton
+        {
+            id: rightButton
+            onRightClicked: label_and_options.rightClicked()
+        }
 
         FiveButtons
         {

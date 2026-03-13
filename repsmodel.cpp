@@ -1,39 +1,71 @@
 #include "repsmodel.h"
+#include <QDebug>
+
 
 RepsModel::RepsModel(QObject *parent) : QObject{parent}
 {
-    items = {"8", "9", "10", "11", "12", "13", "14", "15"};
+    m_reps = {"8", "9", "10", "11", "12", "13", "14", "15"};
+    m_weights = {"5 кг", "10 кг", "12.5 кг", "16 кг", "24 кг", "32 кг"};
 }
 
-QStringList RepsModel::visibleItems() const
+QStringList RepsModel::makeVisibleItems(const QStringList &type, int index) const
 {
     QStringList result;
     for(int i = 0; i < 4; i++)
     {
         int idx = index + i;
-        if(idx < items.size())
-            result << items[idx];
+        if(idx < type.size())
+            result << type[idx];
         else
             result << "";
     }
     return result;
 }
 
-void RepsModel::next()
+QStringList RepsModel::repsVisibleItems() const
 {
-    if(index + 4 < items.size())
+    return makeVisibleItems(m_reps, m_reps_i);
+}
+
+QStringList RepsModel::weightsVisibleItems() const
+{
+    return makeVisibleItems(m_weights, m_weights_i);
+}
+
+void RepsModel::reps_next()
+{
+    if(m_reps_i + 4 < m_reps.size())
     {
-        index += 1;
-        emit visibleItemsChanged();
+        m_reps_i += 1;
+        emit repsVisibleItemsChanged();
     }
 }
 
-void RepsModel::prev()
+void RepsModel::reps_prev()
 {
-    if(index > 0)
+    if(m_reps_i > 0)
     {
-        index -= 1;
-        emit visibleItemsChanged();
+        m_reps_i -= 1;
+        emit repsVisibleItemsChanged();
     }
 }
+
+void RepsModel::weights_next()
+{
+    if(m_weights_i + 4 < m_weights.size())
+    {
+        m_weights_i += 1;
+        emit weightsVisibleItemsChanged();
+    }
+}
+
+void RepsModel::weights_prev()
+{
+    if(m_weights_i > 0)
+    {
+        m_weights_i -= 1;
+        emit weightsVisibleItemsChanged();
+    }
+}
+
 

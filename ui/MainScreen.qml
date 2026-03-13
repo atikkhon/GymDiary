@@ -14,9 +14,11 @@ Item {
     {
         id: one
         buttonCheckable: true
+
         thisHeight: parent.height * height_koeff
         topAnchors: parent.top
         topMarginAnchors: marge_value
+
         textLabel: "Выбор упражнений"
         buttonDisplayType: "IconOnly"
         firstButtonIconSource: "qrc:/ui/pictures/pullups.png"
@@ -28,6 +30,9 @@ Item {
         fourthButtonIconSource: "qrc:/ui/pictures/deadlift.png"
         fourthButtonText: "Становая"
 
+        onLeftClicked: console.log("nothing")
+        onRightClicked: console.log("nothing")
+
         onCheckedText: (TypeOfExercsise_) =>
         {
             typeOfExercsise = TypeOfExercsise_
@@ -38,15 +43,19 @@ Item {
     {
         id: two
         buttonCheckable: true
+
         thisHeight: parent.height * height_koeff
         topAnchors: one.top
         topMarginAnchors: marge_value + thisHeight
+
         buttonDisplayType: "TextOnly"
         textLabel: "Доп. вес"
-        firstButtonText: "5 кг"
-        secondButtonText: "7.5 кг"
-        thirdButtonText: "10 кг"
-        fourthButtonText: "12.5 кг"
+        firstButtonText: repsModel.weightsVisibleItems[0]
+        secondButtonText: repsModel.weightsVisibleItems[1]
+        thirdButtonText: repsModel.weightsVisibleItems[2]
+        fourthButtonText: repsModel.weightsVisibleItems[3]
+        onLeftClicked: repsModel.weights_prev()
+        onRightClicked: repsModel.weights_next()
 
         onCheckedText: (weight_) =>
         {
@@ -58,19 +67,25 @@ Item {
     {
         id: three
         clickEnable: true
+
         thisHeight: parent.height * height_koeff
         topAnchors: two.top
         topMarginAnchors: marge_value + thisHeight
+
         buttonDisplayType: "TextOnly"
         textLabel: "Повторы"
-        firstButtonText: repsModel.visibleItems[0]
-        secondButtonText: repsModel.visibleItems[1]
-        thirdButtonText: repsModel.visibleItems[2]
-        fourthButtonText: repsModel.visibleItems[3]
+        firstButtonText: repsModel.repsVisibleItems[0]
+        secondButtonText: repsModel.repsVisibleItems[1]
+        thirdButtonText: repsModel.repsVisibleItems[2]
+        fourthButtonText: repsModel.repsVisibleItems[3]
+        onLeftClicked: repsModel.reps_prev()
+        onRightClicked: repsModel.reps_next()
+
         onCheckedText: (reps_) => {
             reps = reps_
             tableModel.setExerciseType(typeOfExercsise, weight, reps)
             console.log(`${typeOfExercsise}, ${weight}, ${reps}`)
         }
+
     }
 }

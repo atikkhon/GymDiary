@@ -19,6 +19,18 @@ Window {
     RepsModel
     {
         id: repsModel
+        onRepsVisibleItemsChanged:
+        {
+            console.log(`reps изменилось и вернуло: ${repsVisibleItems}`)
+        }
+        onWeightsVisibleItemsChanged:
+        {
+            console.log(`weights изменилось и вернуло ${weightsVisibleItems}`)
+        }
+        Component.onCompleted: {
+            console.log("Начальное repsVisibleItems =", repsVisibleItems)
+            console.log("Начальное weightsVisibleItems =", weightsVisibleItems)
+        }
     }
 
     SwipeView
