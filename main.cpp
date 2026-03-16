@@ -11,6 +11,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     qmlRegisterType<TableModel>("TableModel", 0, 1, "TableModel");
+
     qmlRegisterType<RepsModel>("RepsModel", 0, 1, "RepsModel");
 
     QQmlApplicationEngine engine;

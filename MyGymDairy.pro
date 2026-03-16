@@ -27,4 +27,4 @@ HEADERS += \
     tablemodel.h
 
 DISTFILES += \
-    database/GymDiary.csv
+    database/GymDiary.json

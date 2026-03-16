@@ -35,7 +35,7 @@ public:
 signals:
 private:
     QVector<QVector<QString>> table;
-    void saveToCsv(const QStringList &text);
+    void saveToJson(const QStringList &text);
 };
 
 #endif // TABLEMODEL_H
