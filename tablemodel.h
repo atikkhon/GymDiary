@@ -4,10 +4,11 @@
 #include <qqml.h>
 #include <QObject>
 #include <QAbstractTableModel>
+#include <QStandardPaths>
 #include <QFile>
 #include <QTextStream>
 #include <QtCore>
-
+#include <QDate>
 
 class TableModel : public QAbstractTableModel
 {
@@ -33,9 +34,11 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
 signals:
+
 private:
     QVector<QVector<QString>> table;
     void saveToJson(const QStringList &text);
+    QString stringDate;
 };
 
 #endif // TABLEMODEL_H

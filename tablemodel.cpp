@@ -1,7 +1,8 @@
 #include "tablemodel.h"
 
-TableModel::TableModel(QObject *parent) : QAbstractTableModel(parent) {
+TableModel::TableModel(QObject *parent) : QAbstractTableModel(parent), stringDate(QDate::currentDate().toString("dd.MM.yyyy")) {
     table.append({"Дата", "Упражнение", "Доп. вес", "Повторы"});
+    qDebug() << stringDate;
 }
 
 void TableModel::setExerciseType(const QString &text1, const QString &text2, const QString &text3)
@@ -9,14 +10,36 @@ void TableModel::setExerciseType(const QString &text1, const QString &text2, con
     int newRow = table.size();
 
     beginInsertRows(QModelIndex(), newRow, newRow);
-    table.append({"15.11", text1, text2, text3});
+    table.append({stringDate, text1, text2, text3});
     endInsertRows();
-    saveToJson({"12.11" ,text1, text2, text3});
+    saveToJson({stringDate ,text1, text2, text3});
 }
 
 void TableModel::saveToJson(const QStringList &text)
 {
-    QFile myFile("/home/atikkhon/myqtprojects/MyGymDairy/database/GymDiary.json");
+    QString path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QDir().mkpath(path);
+
+    QString filePath = path + "/GymDiary.json";
+
+    QFile myFile(filePath);
+
+    if (!myFile.exists())
+    {
+        QFile templateFile(":/database/GymDiary.json");
+
+        if (templateFile.open(QIODevice::ReadOnly))
+        {
+            QByteArray data = templateFile.readAll();
+            templateFile.close();
+//18d1
+            if (myFile.open(QIODevice::WriteOnly))
+            {
+                myFile.write(data);
+                myFile.close();
+            }
+        }
+    }
 
     QJsonObject doc_obj;
     QJsonArray trainings_arr;
