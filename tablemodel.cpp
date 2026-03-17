@@ -15,6 +15,94 @@ void TableModel::setExerciseType(const QString &text1, const QString &text2, con
     saveToJson({stringDate ,text1, text2, text3});
 }
 
+void TableModel::rebuildTableFromJson()
+{
+    table1.clear();
+
+    QString path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QString filePath = path + "/GymDiary.json";
+
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly))
+        return;
+
+    QByteArray bytes = file.readAll();
+    file.close();
+
+    QJsonParseError error;
+    QJsonDocument doc = QJsonDocument::fromJson(bytes, &error);
+
+    if (error.error != QJsonParseError::NoError || !doc.isObject())
+        return;
+
+    QJsonObject rootObj = doc.object();
+    QJsonArray trainings = rootObj.value("trainings").toArray();
+
+    // Проходим по датам
+    for (int i = 0; i < trainings.size(); ++i)
+    {
+        QJsonObject trainingObj = trainings[i].toObject();
+        QString date = trainingObj.value("date").toString();
+
+        QJsonArray exercises = trainingObj.value("exercises").toArray();
+
+        // Проходим по упражнениям
+        for (int j = 0; j < exercises.size(); ++j)
+        {
+            QJsonObject exerciseObj = exercises[j].toObject();
+            QString exerciseName = exerciseObj.value("name").toString();
+
+            QJsonArray sets = exerciseObj.value("sets").toArray();
+
+            QVector<QString> row;
+
+            // Первая строка дня содержит дату
+            if (j == 0)
+                row.append(date);
+            else
+                row.append("");
+
+            row.append(exerciseName);
+
+            // Добавляем все подходы
+            for (int k = 0; k < sets.size(); ++k)
+            {
+                QJsonObject setObj = sets[k].toObject();
+                QString weight = setObj.value("weight").toString();
+                QString reps   = setObj.value("reps").toString();
+
+                row.append(weight + " " + reps);
+            }
+
+            table1.append(row);
+        }
+    }
+
+    qDebug() << "Таблица пересобрана:";
+    qDebug() << table1;
+
+    beginResetModel();
+    endResetModel();
+    emit getTableChanged();
+}
+
+QVariantList TableModel::getTable()
+{
+    QVariantList outerList;
+
+    for (const auto &row : table1)
+    {
+        QVariantList innerList;
+        for (const auto &cell : row)
+        {
+            innerList.append(cell);
+        }
+        outerList.append(innerList);
+    }
+
+    return outerList;
+}
+
 void TableModel::saveToJson(const QStringList &text)
 {
     QString path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
@@ -90,6 +178,7 @@ void TableModel::saveToJson(const QStringList &text)
         if (training_obj.value("date").toString() == newDate)
         {
             trainingFound = true;
+
             QJsonArray exercises_arr = training_obj.value("exercises").toArray();
             //Ищем упражнение внутри даты
             for (int j = 0; j < exercises_arr.size(); j++)
@@ -103,6 +192,7 @@ void TableModel::saveToJson(const QStringList &text)
                 if (exercise_obj.value("name").toString() == newExercise)
                 {
                     exerciseFound = true;
+
                     QJsonArray sets_arr = exercise_obj.value("sets").toArray();
 
                     //Добовляем новый подход
@@ -112,6 +202,7 @@ void TableModel::saveToJson(const QStringList &text)
                     sets_arr.append(newSet);
                     exercise_obj["sets"] = sets_arr;
                     exercises_arr[j] = exercise_obj;
+
                     break;
                 }
             }
@@ -170,7 +261,6 @@ void TableModel::saveToJson(const QStringList &text)
     }
 
     doc_obj["trainings"] = trainings_arr;
-
     QJsonDocument newDoc(doc_obj);
 
     if (myFile.open(QIODevice::WriteOnly))
@@ -179,6 +269,7 @@ void TableModel::saveToJson(const QStringList &text)
         myFile.close();
         qDebug() << "JSON сохранён";
     }
+    rebuildTableFromJson();
 }
 
 int TableModel::rowCount(const QModelIndex &) const

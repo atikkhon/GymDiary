@@ -4,7 +4,8 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import TableModel
 import RepsModel
-import "ui"
+import "ui/Screens/Main"
+import "ui/Screens/Table"
 
 Window {
     width: 366
@@ -43,14 +44,5 @@ Window {
 
         MainScreen { }
         TableViewScreen { }
-    }
-
-    PageIndicator
-    {
-        id: indicator
-        count: mySwipeView.count
-        currentIndex: mySwipeView.currentIndex
-        anchors.bottom: mySwipeView.bottom
-        anchors.horizontalCenter: parent.horizontalCenter
     }
 }

@@ -33,11 +33,18 @@ public:
 
     QHash<int, QByteArray> roleNames() const override;
 
+    void saveToJson(const QStringList &text);
+
+    void rebuildTableFromJson();
+
+    Q_INVOKABLE QVariantList getTable();
+
 signals:
+    void getTableChanged();
 
 private:
     QVector<QVector<QString>> table;
-    void saveToJson(const QStringList &text);
+    QVector<QVector<QString>> table1;
     QString stringDate;
 };
 
