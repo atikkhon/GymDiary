@@ -2,7 +2,7 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls
 import QtQuick.Layouts
-import TableModel
+import DiaryModel
 import RepsModel
 import "ui/Screens/Main"
 import "ui/Screens/Table"
@@ -13,9 +13,9 @@ Window {
     visible: true
     title: qsTr("Gym Diary")
 
-    TableModel
+    DiaryModel
     {
-        id: tableModel
+        id: diaryModel
     }
     RepsModel
     {

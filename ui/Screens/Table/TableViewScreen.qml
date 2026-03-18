@@ -2,41 +2,42 @@ import QtQuick 2.15
 import QtQuick.Controls
 
 Item {
-    Connections
+    Rectangle
     {
-        target: tableModel
-        function onGetTableChanged() {
-            //myRepeater.model = tableModel.getTable()
+        id: tablemodelframe
+        anchors.fill: parent
+        anchors.top: parent.top
+        anchors.topMargin: 30
+
+        ListView
+        {
+            id: myListView
+            model: diaryModel
+            anchors
+            {
+                fill: parent
+                margins: 20
+            }
+
+            section.property: "date"
+            section.criteria: ViewSection.FullString
+            section.delegate: Text { text: section }
+            delegate: Column
+            {
+                leftPadding: 20
+                Text { text: exercise }
+                Flow
+                {
+                    width: myListView.width
+                    leftPadding: 20
+                    Repeater {
+                        model: sets                        // роль sets (QStringList)
+                        delegate: Text { text: modelData + " " }// modelData = строка подхода
+                    }
+                }
+            }
+
         }
     }
-
-    // Rectangle
-    // {
-    //     id: tablemodelframe
-    //     anchors.fill: parent
-
-    //     TableView
-    //     {
-    //         id: mytableview
-    //         anchors.fill: parent
-    //         model: tableModel
-    //         anchors.horizontalCenter: parent.horizontalCenter
-    //         columnSpacing: 1
-    //         rowSpacing: 1
-    //         clip: true
-
-    //         delegate: Rectangle
-    //         {
-    //             implicitHeight: 40
-    //             implicitWidth: 90
-    //             border.color: "black"
-    //             Text {
-    //                 anchors.centerIn: parent
-    //                 font.pixelSize: 13
-    //                 text: tabledata
-    //             }
-    //         }
-    //     }
-    // }
 }
 

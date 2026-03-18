@@ -1,109 +1,50 @@
-#include "tablemodel.h"
+#include "diarymodel.h"
 
-TableModel::TableModel(QObject *parent) : QAbstractTableModel(parent), stringDate(QDate::currentDate().toString("dd.MM.yyyy")) {
-    table.append({"Дата", "Упражнение", "Доп. вес", "Повторы"});
+DiaryModel::DiaryModel(QObject *parent)
+    : QAbstractListModel{parent}, stringDate(QDate::currentDate().toString("dd.MM.yyyy"))
+{
     qDebug() << stringDate;
+    rebuildNoticesFromJson();
 }
 
-void TableModel::setExerciseType(const QString &text1, const QString &text2, const QString &text3)
+int DiaryModel::rowCount(const QModelIndex &) const
 {
-    int newRow = table.size();
-
-    beginInsertRows(QModelIndex(), newRow, newRow);
-    table.append({stringDate, text1, text2, text3});
-    endInsertRows();
-    saveToJson({stringDate ,text1, text2, text3});
+    return notices.size();
 }
 
-void TableModel::rebuildTableFromJson()
+QVariant DiaryModel::data(const QModelIndex &index, int role) const
 {
-    table1.clear();
+    if (!index.isValid())
+        return {};
 
-    QString path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    QString filePath = path + "/GymDiary.json";
+    const int row = index.row();
+    if (row < 0 || row >= notices.size())
+        return {};
 
-    QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly))
-        return;
+    const Entry &e = notices.at(row);
 
-    QByteArray bytes = file.readAll();
-    file.close();
-
-    QJsonParseError error;
-    QJsonDocument doc = QJsonDocument::fromJson(bytes, &error);
-
-    if (error.error != QJsonParseError::NoError || !doc.isObject())
-        return;
-
-    QJsonObject rootObj = doc.object();
-    QJsonArray trainings = rootObj.value("trainings").toArray();
-
-    // Проходим по датам
-    for (int i = 0; i < trainings.size(); ++i)
-    {
-        QJsonObject trainingObj = trainings[i].toObject();
-        QString date = trainingObj.value("date").toString();
-
-        QJsonArray exercises = trainingObj.value("exercises").toArray();
-
-        // Проходим по упражнениям
-        for (int j = 0; j < exercises.size(); ++j)
-        {
-            QJsonObject exerciseObj = exercises[j].toObject();
-            QString exerciseName = exerciseObj.value("name").toString();
-
-            QJsonArray sets = exerciseObj.value("sets").toArray();
-
-            QVector<QString> row;
-
-            // Первая строка дня содержит дату
-            if (j == 0)
-                row.append(date);
-            else
-                row.append("");
-
-            row.append(exerciseName);
-
-            // Добавляем все подходы
-            for (int k = 0; k < sets.size(); ++k)
-            {
-                QJsonObject setObj = sets[k].toObject();
-                QString weight = setObj.value("weight").toString();
-                QString reps   = setObj.value("reps").toString();
-
-                row.append(weight + " " + reps);
-            }
-
-            table1.append(row);
-        }
+    switch (role) {
+    case date:
+        return e.date;       // QString упакуется в QVariant автоматически
+    case exercise:
+        return e.exercise;   // QString
+    case sets:
+        return e.sets;       // QStringList тоже упакуется в QVariant
+    default:
+        return {};
     }
-
-    qDebug() << "Таблица пересобрана:";
-    qDebug() << table1;
-
-    beginResetModel();
-    endResetModel();
-    emit getTableChanged();
 }
 
-QVariantList TableModel::getTable()
+QHash<int, QByteArray> DiaryModel::roleNames() const
 {
-    QVariantList outerList;
-
-    for (const auto &row : table1)
-    {
-        QVariantList innerList;
-        for (const auto &cell : row)
-        {
-            innerList.append(cell);
-        }
-        outerList.append(innerList);
-    }
-
-    return outerList;
+    QHash<int, QByteArray> roles;
+    roles.insert(date, "date");
+    roles.insert(exercise, "exercise");
+    roles.insert(sets, "sets");
+    return roles;
 }
 
-void TableModel::saveToJson(const QStringList &text)
+void DiaryModel::saveToJson(const QString &TypeOfExercise, const QString &Weight, const QString &Reps)
 {
     QString path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     QDir().mkpath(path);
@@ -120,7 +61,7 @@ void TableModel::saveToJson(const QStringList &text)
         {
             QByteArray data = templateFile.readAll();
             templateFile.close();
-//18d1
+
             if (myFile.open(QIODevice::WriteOnly))
             {
                 myFile.write(data);
@@ -158,10 +99,10 @@ void TableModel::saveToJson(const QStringList &text)
         }
     }
     // Данные из параметров
-    QString newDate = text[0];
-    QString newExercise = text[1];
-    QString newWeight = text[2];
-    QString newReps = text[3];
+    QString newDate = stringDate;
+    QString newExercise = TypeOfExercise;
+    QString newWeight = Weight;
+    QString newReps = Reps;
 
     bool trainingFound = false;
     bool exerciseFound = false;
@@ -269,49 +210,71 @@ void TableModel::saveToJson(const QStringList &text)
         myFile.close();
         qDebug() << "JSON сохранён";
     }
-    rebuildTableFromJson();
+    rebuildNoticesFromJson();
 }
 
-int TableModel::rowCount(const QModelIndex &) const
+void DiaryModel::rebuildNoticesFromJson()
 {
-    return table.size(); //number of rows
-}
+    QVector<Entry> newNotices;
 
-int TableModel::columnCount(const QModelIndex &) const
-{
-    return table.at(0).size(); //number of columns
-}
+    //Корректное открытие json в режиме чтения
+    QString path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QString filePath = path + "/GymDiary.json";
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly))
+        return;
+    QByteArray bytes = file.readAll();
+    file.close();
+    QJsonParseError error;
+    QJsonDocument doc = QJsonDocument::fromJson(bytes, &error);
+    if (error.error != QJsonParseError::NoError || !doc.isObject())
+        return;
 
-QVariant TableModel::data(const QModelIndex &index, int role) const
-{
-    switch(role)
+    QJsonObject doc_obj = doc.object();
+    QJsonArray trainings = doc_obj.value("trainings").toArray();
+    // Проходим по датам
+    for (int i = 0; i < trainings.size(); ++i)
     {
-        case TableDataRole:
+        QJsonObject training_obj = trainings[i].toObject();
+        QString date = training_obj.value("date").toString();
+
+        QJsonArray exercises = training_obj.value("exercises").toArray();
+        // Проходим по упражнениям
+        for (int j = 0; j < exercises.size(); ++j)
         {
-            return table.at(index.row()).at(index.column());
-        }
-        case HeadingRole:
-        {
-            if (index.row()==0)
+            // Объект структуры - хранит запись
+            Entry notice;
+
+            QJsonObject exercise_obj = exercises[j].toObject();
+            QString exercise = exercise_obj.value("name").toString();
+
+            // Добавляем дату в структуру
+            notice.date = date;
+            //Добавляем имя упражнения в структуру
+            notice.exercise = exercise;
+
+            QJsonArray sets = exercise_obj.value("sets").toArray();
+            QStringList sets_for_notice;
+            // Добавляем все подходы в sets_for_notice
+            for (int k = 0; k < sets.size(); ++k)
             {
-                return true;
+                QJsonObject setObj = sets[k].toObject();
+                QString weight = setObj.value("weight").toString();
+                QString reps   = setObj.value("reps").toString();
+
+                sets_for_notice.append(reps + "(" + weight + ")");
             }
-            else
-            {
-                return false;
-            }
+            // Добавляем в структуру подходы
+            notice.sets = sets_for_notice;
+            // Добавляем запись в вектор записей
+            newNotices.append(notice);
         }
-        default:
-            break;
     }
-
-    return QVariant();
-}
-
-QHash<int, QByteArray> TableModel::roleNames() const
-{
-    QHash<int,QByteArray> roles;
-    roles[TableDataRole] = "tabledata";
-    roles[HeadingRole] = "heading";
-    return roles;
+    beginResetModel();
+    notices = std::move(newNotices);
+    endResetModel();
+    for (int i = 0; i < notices.size(); ++i) {
+        const Entry &e = notices[i];
+        qDebug() << i << e.date << e.exercise << e.sets;
+    }
 }

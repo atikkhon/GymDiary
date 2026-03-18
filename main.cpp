@@ -1,7 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QDebug>
-#include <tablemodel.h>
+#include <diarymodel.h>
 #include <repsmodel.h>
 #include <QQuickStyle>
 
@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     QQuickStyle::setStyle("Fusion");
     QGuiApplication app(argc, argv);
 
-    qmlRegisterType<TableModel>("TableModel", 0, 1, "TableModel");
+    qmlRegisterType<DiaryModel>("DiaryModel", 0, 1, "DiaryModel");
 
     qmlRegisterType<RepsModel>("RepsModel", 0, 1, "RepsModel");
 
