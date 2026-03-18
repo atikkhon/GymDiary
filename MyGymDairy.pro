@@ -27,5 +27,4 @@ HEADERS += \
     diarymodel.h \
     repsmodel.h
 
-DISTFILES += \
-    database/GymDiary.json
+DISTFILES +=

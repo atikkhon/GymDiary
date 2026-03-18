@@ -7,8 +7,21 @@ Item {
         id: tablemodelframe
         anchors.fill: parent
         anchors.top: parent.top
-        anchors.topMargin: 30
+        anchors.topMargin: 50
+        color: "#000033"
 
+        Button
+        {
+            id: recreateJsonButton
+            text: "Очистить дневник"
+            anchors
+            {
+                horizontalCenter: parent.horizontalCenter
+                bottom: myListView.top
+                bottomMargin: 15
+            }
+            onClicked: diaryModel.recreateJson()
+        }
         ListView
         {
             id: myListView
@@ -16,23 +29,39 @@ Item {
             anchors
             {
                 fill: parent
-                margins: 20
+                margins: 30
             }
 
             section.property: "date"
             section.criteria: ViewSection.FullString
-            section.delegate: Text { text: section }
+            section.delegate: Text
+            {
+                color: "white"
+                font.bold: true
+                font.pixelSize: 18
+                text: section
+            }
             delegate: Column
             {
                 leftPadding: 20
-                Text { text: exercise }
+                Text
+                {
+                    color: "white"
+                    font.pixelSize: 18
+                    text: exercise
+                }
                 Flow
                 {
                     width: myListView.width
                     leftPadding: 20
                     Repeater {
                         model: sets                        // роль sets (QStringList)
-                        delegate: Text { text: modelData + " " }// modelData = строка подхода
+                        delegate: Text
+                        {
+                            color: "white"
+                            font.pixelSize: 18
+                            text: modelData + " "
+                        }// modelData = строка подхода
                     }
                 }
             }

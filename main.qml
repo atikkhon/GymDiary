@@ -12,6 +12,7 @@ Window {
     height: 814
     visible: true
     title: qsTr("Gym Diary")
+    color: "#000033"
 
     DiaryModel
     {

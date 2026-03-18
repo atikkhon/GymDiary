@@ -11,5 +11,6 @@
         <file>ui/Screens/Main/Files/RightButton.qml</file>
         <file>ui/Screens/Main/MainScreen.qml</file>
         <file>ui/Screens/Table/TableViewScreen.qml</file>
+        <file>database/GymDiary.json</file>
     </qresource>
 </RCC>
