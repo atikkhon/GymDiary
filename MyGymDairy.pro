@@ -7,8 +7,10 @@ QT += quickcontrols2
 
 SOURCES += \
         diarymodel.cpp \
+        jsondatabase.cpp \
         main.cpp \
-        repsmodel.cpp
+        repsmodel.cpp \
+        setslogmodel.cpp
 
 RESOURCES += qml.qrc
 
@@ -25,6 +27,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     diarymodel.h \
-    repsmodel.h
+    domain.h \
+    jsondatabase.h \
+    repsmodel.h \
+    setslogmodel.h
 
 DISTFILES +=

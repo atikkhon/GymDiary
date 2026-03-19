@@ -1,0 +1,163 @@
+import QtQuick 2.15
+import QtQuick.Controls
+import "Files"
+
+Item {
+
+    property int marge_value: 10
+    property double height_koeff: 0.11
+
+    property string typeOfExercsise
+    property string weight
+    property string reps
+
+
+    Rectangle
+    {
+        id: myRectangle
+        color: "transparent"
+        border.color: "white"
+        anchors
+        {
+            left: parent.left
+            right: parent.right
+            top: parent.top
+            bottom: one.top
+            margins: 50
+        }
+        Component
+        {
+            id: forDelegate
+            Item
+            {
+                id: myItem
+                required property string date
+                required property string exercise
+                required property string sets
+                width: myRectangle.width
+                height: 20
+                Text
+                {
+                    color: "white"
+                    text: myItem.date + myItem.exercise + myItem.sets
+                }
+            }
+        }
+        ListView
+        {
+            anchors.fill:parent
+            model: diaryModel
+            delegate: forDelegate
+        }
+    }
+
+    // Rectangle {
+    //     id: borderoflog
+    //     border.color: "white"
+
+    //     color: "transparent"
+    //     anchors {
+    //         left: parent.left
+    //         leftMargin: 50
+    //         right: parent.right
+    //         rightMargin: 50
+    //         top: parent.top
+    //         topMargin: 50
+    //         bottom: one.top
+    //         bottomMargin: 50
+    //     }
+    //     ListView {
+    //         model: diaryModel
+    //         anchors {
+    //             fill: parent
+    //             margins: 10
+    //         }
+    //         delegate: Column {
+    //             Repeater {
+    //                 model: sets
+    //                 Text {
+
+    //                     color: "white"
+    //                     font.pixelSize: 12
+    //                     text: date + exercise + modelData
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+    LabelAndOptions {
+        id: one
+        buttonCheckable: true
+
+        thisHeight: parent.height * height_koeff
+
+        topAnchors: parent.top
+        topMarginAnchors: parent.height / 2
+
+        textLabel: "Выбор упражнений"
+        buttonDisplayType: "IconOnly"
+        firstButtonIconSource: "qrc:/ui/pictures/pullups.png"
+        firstButtonText: "Подтягивания"
+        secondButtonIconSource: "qrc:/ui/pictures/paralets.png"
+        secondButtonText: "Брусья"
+        thirdButtonIconSource: "qrc:/ui/pictures/quads.png"
+        thirdButtonText: "Присед"
+        fourthButtonIconSource: "qrc:/ui/pictures/deadlift.png"
+        fourthButtonText: "Становая"
+
+        onLeftClicked: console.log("nothing")
+        onRightClicked: console.log("nothing")
+
+        onCheckedText: TypeOfExercsise_ => {
+                           typeOfExercsise = TypeOfExercsise_
+                       }
+    }
+
+    LabelAndOptions {
+        id: two
+        buttonCheckable: true
+
+        thisHeight: parent.height * height_koeff
+
+        topAnchors: one.bottom
+        topMarginAnchors: 10
+
+        buttonDisplayType: "TextOnly"
+        textLabel: "Доп. вес"
+        firstButtonText: repsModel.weightsVisibleItems[0]
+        secondButtonText: repsModel.weightsVisibleItems[1]
+        thirdButtonText: repsModel.weightsVisibleItems[2]
+        fourthButtonText: repsModel.weightsVisibleItems[3]
+        onLeftClicked: repsModel.weights_prev()
+        onRightClicked: repsModel.weights_next()
+
+        onCheckedText: weight_ => {
+                           weight = weight_
+                       }
+    }
+
+    LabelAndOptions {
+        id: three
+        clickEnable: true
+
+        thisHeight: parent.height * height_koeff
+
+        topAnchors: two.bottom
+        topMarginAnchors: 10
+
+        buttonDisplayType: "TextOnly"
+        textLabel: "Повторы"
+        firstButtonText: repsModel.repsVisibleItems[0]
+        secondButtonText: repsModel.repsVisibleItems[1]
+        thirdButtonText: repsModel.repsVisibleItems[2]
+        fourthButtonText: repsModel.repsVisibleItems[3]
+        onLeftClicked: repsModel.reps_prev()
+        onRightClicked: repsModel.reps_next()
+
+        onCheckedText: reps_ => {
+                           reps = reps_
+                           diaryModel.addingSetToJson(typeOfExercsise,
+                                                      weight, reps)
+                       }
+    }
+}
