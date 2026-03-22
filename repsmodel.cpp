@@ -3,7 +3,7 @@
 RepsModel::RepsModel(QObject *parent) : QObject{parent}
 {
     m_reps = {"8", "9", "10", "11", "12", "13", "14", "15"};
-    m_weights = {"5 кг", "10 кг", "12.5 кг", "16 кг", "24 кг", "32 кг"};
+    m_weights = {"5 кг", "10 кг", "12.5 кг", "15 кг", "16 кг", "20 кг", "24 кг", "25 кг", "32 кг"};
 }
 
 QStringList RepsModel::makeVisibleItems(const QStringList &type, int index) const

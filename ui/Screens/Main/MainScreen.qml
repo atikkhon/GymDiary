@@ -33,58 +33,24 @@ Item {
                 id: myItem
                 required property string date
                 required property string exercise
-                required property string sets
+                required property string lastset
                 width: myRectangle.width
                 height: 20
                 Text
                 {
                     color: "white"
-                    text: myItem.date + myItem.exercise + myItem.sets
+                    text: myItem.date + " " + myItem.exercise + " " + myItem.lastset
                 }
             }
         }
         ListView
         {
-            anchors.fill:parent
-            model: diaryModel
+            anchors.fill: parent
+            model: setsLogModel
             delegate: forDelegate
         }
     }
 
-    // Rectangle {
-    //     id: borderoflog
-    //     border.color: "white"
-
-    //     color: "transparent"
-    //     anchors {
-    //         left: parent.left
-    //         leftMargin: 50
-    //         right: parent.right
-    //         rightMargin: 50
-    //         top: parent.top
-    //         topMargin: 50
-    //         bottom: one.top
-    //         bottomMargin: 50
-    //     }
-    //     ListView {
-    //         model: diaryModel
-    //         anchors {
-    //             fill: parent
-    //             margins: 10
-    //         }
-    //         delegate: Column {
-    //             Repeater {
-    //                 model: sets
-    //                 Text {
-
-    //                     color: "white"
-    //                     font.pixelSize: 12
-    //                     text: date + exercise + modelData
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
     LabelAndOptions {
         id: one
         buttonCheckable: true
@@ -154,10 +120,10 @@ Item {
         onLeftClicked: repsModel.reps_prev()
         onRightClicked: repsModel.reps_next()
 
-        onCheckedText: reps_ => {
-                           reps = reps_
-                           diaryModel.addingSetToJson(typeOfExercsise,
-                                                      weight, reps)
-                       }
+        onCheckedText: reps_ =>
+        {
+        reps = reps_
+        db.addSet(typeOfExercsise, weight, reps)
+        }
     }
 }

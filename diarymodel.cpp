@@ -6,49 +6,64 @@ DiaryModel::DiaryModel(QObject *parent)
 
 }
 
-
-void DiaryModel::BuildDiaryFromJson()
+JsonDataBase *DiaryModel::db()
 {
-    QVector<Entry> newNotices;
-    QJsonObject doc_obj;
+    return m_db;
+}
 
-    //Корректное открытие json в режиме чтения
-    if (!OpenJsonReadOnly(doc_obj)) return;
+void DiaryModel::setDb(JsonDataBase *db)
+{
+    if (m_db == db)
+        return;
 
-    QJsonArray trainings = doc_obj.value("trainings").toArray();
-    // Проходим по датам
-    for (int i = 0; i < trainings.size(); ++i)
-    {
-        QJsonObject training_obj = trainings[i].toObject();
-        QString date = training_obj.value("date").toString();
-        QJsonArray exercises = training_obj.value("exercises").toArray();
-        // Проходим по упражнениям
-        for (int j = 0; j < exercises.size(); ++j)
-        {
-            // Объект структуры - хранит запись
-            Entry notice;
-            QJsonObject exercise_obj = exercises[j].toObject();
-            QString exercise = exercise_obj.value("name").toString();
-            // Добавляем дату в структуру
-            notice.date = date;
-            //Добавляем имя упражнения в структуру
-            notice.exercise = exercise;
-            QJsonArray sets = exercise_obj.value("sets").toArray();
-            for (int k = 0; k < sets.size(); ++k)
-            {
-                QJsonObject setObj = sets[k].toObject();
-                QString weight = setObj.value("weight").toString();
-                QString reps   = setObj.value("reps").toString();
-                //Добавляем подходы в структуру
-                notice.sets.append(reps + "(" + weight + ")");
+    // если раньше была база — отцепимся
+    if (m_db != nullptr) {
+        disconnect(m_db, nullptr, this, nullptr);
+    }
+
+    m_db = db;
+
+    // если база есть — подписываемся на изменения
+    if (m_db != nullptr) {
+        connect(m_db, &JsonDataBase::dataChanged,
+                this, &DiaryModel::RebuildDiaryFromDb);
+    }
+
+    emit dbChanged();
+
+    // сразу построим модель (чтобы не ждать следующего dataChanged)
+    RebuildDiaryFromDb();
+}
+
+
+void DiaryModel::RebuildDiaryFromDb()
+{
+    QVector<DiaryNotice> newNotices;
+
+    if (m_db) {
+        const auto &days = m_db->Get_m_days();
+        for (int i = 0; i < days.size(); ++i) {
+            const TrainingDay &day = days[i];
+            for (int j = 0; j < day.exercises.size(); ++j) {
+                const Exercise &ex = day.exercises[j];
+
+                DiaryNotice row;
+                row.date = day.date;
+                row.exercise = ex.name;
+
+                for (int k = 0; k < ex.sets.size(); ++k) {
+                    const Set &s = ex.sets[k];
+                    row.sets.append(s.reps + "(" + s.weight + ")");
+                }
+
+                newNotices.append(std::move(row));
             }
-            // Добавляем запись в вектор записей
-            newNotices.append(notice);
         }
     }
+
     beginResetModel();
     DiaryNotices = std::move(newNotices);
-    endResetModel();   
+    endResetModel();
 }
 
 int DiaryModel::rowCount(const QModelIndex &) const
@@ -65,15 +80,15 @@ QVariant DiaryModel::data(const QModelIndex &index, int role) const
     if (row < 0 || row >= DiaryNotices.size())
         return {};
 
-    const Entry &e = DiaryNotices.at(row);
+    const DiaryNotice &notice = DiaryNotices[row];
 
     switch (role) {
     case date:
-        return e.date;       // QString упакуется в QVariant автоматически
+        return notice.date;       // QString упакуется в QVariant автоматически
     case exercise:
-        return e.exercise;   // QString
+        return notice.exercise;   // QString
     case sets:
-        return e.sets;       // QStringList тоже упакуется в QVariant
+        return notice.sets;       // QStringList тоже упакуется в QVariant
     default:
         return {};
     }

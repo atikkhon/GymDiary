@@ -1,7 +1,8 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include <QDebug>
+#include <jsondatabase.h>
 #include <diarymodel.h>
+#include <setslogmodel.h>
 #include <repsmodel.h>
 #include <QQuickStyle>
 
@@ -13,7 +14,11 @@ int main(int argc, char *argv[])
     QQuickStyle::setStyle("Fusion");
     QGuiApplication app(argc, argv);
 
+    qmlRegisterType<JsonDataBase>("JsonDataBaseModel", 0, 1, "JsonDataBaseModel");
+
     qmlRegisterType<DiaryModel>("DiaryModel", 0, 1, "DiaryModel");
+
+    qmlRegisterType<SetsLogModel>("SetsLogModel", 0, 1, "SetsLogModel");
 
     qmlRegisterType<RepsModel>("RepsModel", 0, 1, "RepsModel");
 

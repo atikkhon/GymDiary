@@ -7,15 +7,23 @@ JsonDataBase::JsonDataBase(QObject *parent)
     QString filePath = path + "/GymDiary.json";
     QFile file(filePath);
     if (!file.exists())
+    {
         CreateJson();
+    }
     else
+    {
         ReadJson();
+        emit dataChanged();
+    }
 }
+
+int JsonDataBase::set_id{0};
 
 bool JsonDataBase::ReadJson()
 {
     m_days.clear();
     QJsonObject doc_obj;
+    int maxId = 0;
 
     //Корректное открытие json в режиме чтения
     if (!OpenJsonReadOnly(doc_obj)) return false;
@@ -44,20 +52,26 @@ bool JsonDataBase::ReadJson()
                 QJsonObject setObj = sets[k].toObject();
                 QString weight = setObj.value("weight").toString();
                 QString reps   = setObj.value("reps").toString();
-
+                int id = setObj.value("id").toInt();
                 Set domain_set;// В одном урпажнении несколько подходов могут быть
                 domain_set.weight = weight;
                 domain_set.reps = reps;
+                domain_set.id = id;
+                if (id > maxId)
+                {
+                    maxId = id;
+                }
                 domain_exercise.sets.append(domain_set);
             }
             training_day.exercises.append(domain_exercise);
         }
         m_days.append(training_day);
     }
+    set_id = maxId;
     return true;
 }
 
-void JsonDataBase::AddSet(const QString &typeOfExercise, const QString &weight, const QString &reps)
+void JsonDataBase::addSet(const QString &typeOfExercise, const QString &weight, const QString &reps)
 {
     const QString date = stringDate; // или передавай date параметром
 
@@ -97,12 +111,18 @@ void JsonDataBase::AddSet(const QString &typeOfExercise, const QString &weight, 
 
     // 3) Добавить подход
     Set s;
+    s.id = ++set_id;
     s.weight = weight;
     s.reps   = reps;
     exercises[exIndex].sets.append(s);
 
-    //if (WriteJson()) НАДО СДЕЛАТЬ ОБНОВЛЕНИЕ МОДЕЛЕЙ или емит сигнала
+    if (WriteJson())
+        emit dataChanged();
+}
 
+QVector<TrainingDay> &JsonDataBase::Get_m_days()
+{
+    return m_days;
 }
 
 bool JsonDataBase::WriteJson()
@@ -127,6 +147,7 @@ bool JsonDataBase::WriteJson()
                 Set &s = ex.sets[k];
 
                 QJsonObject setObj;
+                setObj["id"] = s.id;
                 setObj["weight"] = s.weight;
                 setObj["reps"]   = s.reps;
                 setsArr.append(setObj);
@@ -175,7 +196,7 @@ bool JsonDataBase::CreateJson()
     return true;
 }
 
-bool JsonDataBase::RemoveJson()
+bool JsonDataBase::removeJson()
 {
     QString path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     QString filePath = path + "/GymDiary.json";
@@ -183,6 +204,9 @@ bool JsonDataBase::RemoveJson()
     if (file.exists())
     {
         file.remove();
+        m_days.clear();
+        set_id = 0;
+        emit dataChanged();
         return true;
     }
     else

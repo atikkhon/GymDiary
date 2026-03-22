@@ -1,25 +1,15 @@
 #ifndef DIARYMODEL_H
 #define DIARYMODEL_H
 
-#include <qqml.h>
 #include <jsondatabase.h>
 #include <domain.h>
 #include <QObject>
 #include <QAbstractListModel>
-#include <QStandardPaths>
-#include <QtCore>
-#include <QDate>
-
-// структура, которая будет в записях
-struct Entry {
-    QString date;
-    QString exercise;
-    QStringList sets;
-};
 
 class DiaryModel : public QAbstractListModel
 {
     Q_OBJECT
+    Q_PROPERTY(JsonDataBase* db READ db WRITE setDb NOTIFY dbChanged FINAL);
 
 public:
 
@@ -32,15 +22,30 @@ public:
 
     explicit DiaryModel(QObject *parent = nullptr);
 
+    JsonDataBase* db();
+
+    void setDb(JsonDataBase* db);
+
     int rowCount(const QModelIndex & = QModelIndex()) const override;
 
     QVariant data(const QModelIndex &index, int role) const override;
 
     QHash<int, QByteArray> roleNames() const override;
 
+signals:
+    void dbChanged();
+
+private slots:
+    void RebuildDiaryFromDb();
+
 private:
-    QVector<Entry> DiaryNotices;
-    void BuildDiaryFromJson();
+    struct DiaryNotice {
+        QString date;
+        QString exercise;
+        QStringList sets;
+    };
+    QVector<DiaryNotice> DiaryNotices;
+    JsonDataBase *m_db = nullptr;
 };
 
 #endif // DIARYMODEL_H

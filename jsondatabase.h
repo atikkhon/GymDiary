@@ -17,12 +17,16 @@ class JsonDataBase : public QObject
 public:
     explicit JsonDataBase(QObject *parent = nullptr);
 
-    void AddSet(const QString &TypeOfExercise, const QString &Weight, const QString &Reps);
-    bool RemoveJson();
+    static int set_id; //Счетчик подходов
+
+    Q_INVOKABLE void addSet(const QString &TypeOfExercise, const QString &Weight, const QString &Reps);
+    QVector<TrainingDay>& Get_m_days();
+    Q_INVOKABLE bool removeJson();
     bool ReadJson();
     bool WriteJson();
 
 signals:
+    void dataChanged(); //Данные в m_days изменились
 
 private:
     QVector<TrainingDay> m_days;

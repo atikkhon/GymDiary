@@ -4,6 +4,7 @@
 #include <QVector>
 
 struct Set {
+    int id = 0;
     QString weight;
     QString reps;
 };

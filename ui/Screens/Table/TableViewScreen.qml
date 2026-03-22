@@ -20,7 +20,7 @@ Item {
                 bottom: myListView.top
                 bottomMargin: 15
             }
-            onClicked: diaryModel.recreateJson()
+            onClicked: db.removeJson()
         }
         ListView
         {

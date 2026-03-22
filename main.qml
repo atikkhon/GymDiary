@@ -2,7 +2,9 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls
 import QtQuick.Layouts
+import JsonDataBaseModel
 import DiaryModel
+import SetsLogModel
 import RepsModel
 import "ui/Screens/Main"
 import "ui/Screens/Table"
@@ -14,9 +16,21 @@ Window {
     title: qsTr("Gym Diary")
     color: "#000033"
 
+    JsonDataBaseModel
+    {
+        id: db
+    }
+
     DiaryModel
     {
         id: diaryModel
+        db: db
+    }
+
+    SetsLogModel
+    {
+        id: setsLogModel
+        db: db
     }
     RepsModel
     {
