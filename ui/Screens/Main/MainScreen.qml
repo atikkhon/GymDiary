@@ -16,14 +16,13 @@ Item {
     {
         id: myRectangle
         color: "transparent"
-        border.color: "white"
         anchors
         {
             left: parent.left
             right: parent.right
             top: parent.top
             bottom: one.top
-            margins: 50
+            margins: 40
         }
         Component
         {
@@ -31,13 +30,20 @@ Item {
             Item
             {
                 id: myItem
+                required property int index
                 required property string date
                 required property string exercise
                 required property string lastset
                 width: myRectangle.width
-                height: 20
+                height: 40
+                MouseArea { anchors.fill: parent; onClicked: mySetsLog.currentIndex = myItem.index }
                 Text
                 {
+                    anchors
+                    {
+                        centerIn: parent
+                    }
+                    font.pixelSize: 18
                     color: "white"
                     text: myItem.date + " " + myItem.exercise + " " + myItem.lastset
                 }
@@ -45,9 +51,16 @@ Item {
         }
         ListView
         {
-            anchors.fill: parent
+            id: mySetsLog
             model: setsLogModel
             delegate: forDelegate
+            verticalLayoutDirection:  ListView.BottomToTop
+            height: 200
+            highlight: Rectangle { color: "#4C0099"; radius: 10 }
+            highlightFollowsCurrentItem: true
+            width: parent.width
+            anchors.bottom: parent.bottom
+            clip: true
         }
     }
 

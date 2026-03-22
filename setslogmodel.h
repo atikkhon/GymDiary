@@ -6,7 +6,6 @@
 #include <domain.h>
 #include <QObject>
 #include <QAbstractListModel>
-#include <algorithm>
 
 class SetsLogModel : public QAbstractListModel
 {
@@ -21,18 +20,18 @@ public:
         exercise,
         lastset
     };
-    JsonDataBase* db();
-
-    void setDb(JsonDataBase* db);
 
     int rowCount(const QModelIndex & = QModelIndex()) const override;
-
     QVariant data(const QModelIndex &index, int role) const override;
-
     QHash<int, QByteArray> roleNames() const override;
+
+    JsonDataBase* db();
 
 signals:
     void dbChanged();
+
+public slots:
+    void setDb(JsonDataBase* db); //сеттер
 
 private slots:
     void RebuildLogFromDb();

@@ -2,9 +2,7 @@
 
 DiaryModel::DiaryModel(QObject *parent)
     : QAbstractListModel{parent}
-{
-
-}
+{}
 
 JsonDataBase *DiaryModel::db()
 {
@@ -25,8 +23,7 @@ void DiaryModel::setDb(JsonDataBase *db)
 
     // если база есть — подписываемся на изменения
     if (m_db != nullptr) {
-        connect(m_db, &JsonDataBase::dataChanged,
-                this, &DiaryModel::RebuildDiaryFromDb);
+    connect(m_db, &JsonDataBase::dataChanged, this, &DiaryModel::RebuildDiaryFromDb);
     }
 
     emit dbChanged();
@@ -40,7 +37,7 @@ void DiaryModel::RebuildDiaryFromDb()
 {
     QVector<DiaryNotice> newNotices;
 
-    if (m_db) {
+    if (m_db != nullptr) {
         const auto &days = m_db->Get_m_days();
         for (int i = 0; i < days.size(); ++i) {
             const TrainingDay &day = days[i];
@@ -84,11 +81,11 @@ QVariant DiaryModel::data(const QModelIndex &index, int role) const
 
     switch (role) {
     case date:
-        return notice.date;       // QString упакуется в QVariant автоматически
+        return notice.date;
     case exercise:
-        return notice.exercise;   // QString
+        return notice.exercise;
     case sets:
-        return notice.sets;       // QStringList тоже упакуется в QVariant
+        return notice.sets;
     default:
         return {};
     }

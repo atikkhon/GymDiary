@@ -9,11 +9,13 @@ JsonDataBase::JsonDataBase(QObject *parent)
     if (!file.exists())
     {
         CreateJson();
+        qDebug() << "Json не существуетвовал, был cоздан?" << CreateJson();
     }
     else
     {
         ReadJson();
         emit dataChanged();
+        qDebug() << "Json существует, прочитан?" << ReadJson();
     }
 }
 
@@ -57,10 +59,10 @@ bool JsonDataBase::ReadJson()
                 domain_set.weight = weight;
                 domain_set.reps = reps;
                 domain_set.id = id;
+
                 if (id > maxId)
-                {
                     maxId = id;
-                }
+
                 domain_exercise.sets.append(domain_set);
             }
             training_day.exercises.append(domain_exercise);
@@ -73,7 +75,7 @@ bool JsonDataBase::ReadJson()
 
 void JsonDataBase::addSet(const QString &typeOfExercise, const QString &weight, const QString &reps)
 {
-    const QString date = stringDate; // или передавай date параметром
+    const QString date = stringDate;
 
     // 1) Найти день (или создать)
     int dayIndex = -1;
@@ -203,9 +205,9 @@ bool JsonDataBase::removeJson()
     QFile file(filePath);
     if (file.exists())
     {
-        file.remove();
+        //file.remove();
         m_days.clear();
-        set_id = 0;
+        //set_id = 0;
         emit dataChanged();
         return true;
     }

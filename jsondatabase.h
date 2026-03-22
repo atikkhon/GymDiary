@@ -10,6 +10,7 @@
 #include <QJsonParseError>
 #include <QFile>
 #include <QDir>
+#include <QDebug>
 
 class JsonDataBase : public QObject
 {
@@ -20,10 +21,9 @@ public:
     static int set_id; //Счетчик подходов
 
     Q_INVOKABLE void addSet(const QString &TypeOfExercise, const QString &Weight, const QString &Reps);
-    QVector<TrainingDay>& Get_m_days();
     Q_INVOKABLE bool removeJson();
-    bool ReadJson();
-    bool WriteJson();
+
+    QVector<TrainingDay>& Get_m_days();
 
 signals:
     void dataChanged(); //Данные в m_days изменились
@@ -32,6 +32,8 @@ private:
     QVector<TrainingDay> m_days;
     QString stringDate;
     bool CreateJson();
+    bool ReadJson();
+    bool WriteJson();
     bool OpenJsonReadOnly(QJsonObject & doc_obj);
     bool OpenJsonWriteOnly(QJsonDocument & doc);
 };

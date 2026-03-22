@@ -21,19 +21,17 @@ public:
     };
 
     explicit DiaryModel(QObject *parent = nullptr);
-
-    JsonDataBase* db();
-
-    void setDb(JsonDataBase* db);
-
     int rowCount(const QModelIndex & = QModelIndex()) const override;
-
     QVariant data(const QModelIndex &index, int role) const override;
-
     QHash<int, QByteArray> roleNames() const override;
+
+    JsonDataBase* db(); //геттер
 
 signals:
     void dbChanged();
+
+public slots:
+    void setDb(JsonDataBase* db); //сеттер
 
 private slots:
     void RebuildDiaryFromDb();
@@ -45,7 +43,7 @@ private:
         QStringList sets;
     };
     QVector<DiaryNotice> DiaryNotices;
-    JsonDataBase *m_db = nullptr;
+    JsonDataBase* m_db = nullptr;
 };
 
 #endif // DIARYMODEL_H
