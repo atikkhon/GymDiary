@@ -18,7 +18,8 @@ public:
     {
         date = Qt::UserRole + 1,
         exercise,
-        lastset
+        lastset,
+        setid
     };
 
     int rowCount(const QModelIndex & = QModelIndex()) const override;

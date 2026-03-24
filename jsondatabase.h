@@ -21,6 +21,7 @@ public:
     static int set_id; //Счетчик подходов
 
     Q_INVOKABLE void addSet(const QString &TypeOfExercise, const QString &Weight, const QString &Reps);
+    Q_INVOKABLE bool removeSetFromJson(int id);
     Q_INVOKABLE bool removeJson();
 
     QVector<TrainingDay>& Get_m_days();

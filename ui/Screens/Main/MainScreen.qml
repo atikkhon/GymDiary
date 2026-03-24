@@ -34,9 +34,15 @@ Item {
                 required property string date
                 required property string exercise
                 required property string lastset
+                required property int setid
                 width: myRectangle.width
                 height: 40
-                MouseArea { anchors.fill: parent; onClicked: mySetsLog.currentIndex = myItem.index }
+                MouseArea
+                {
+                    anchors.fill: parent
+                    onClicked: mySetsLog.currentIndex = myItem.index
+                    onDoubleClicked: db.removeSetFromJson(myItem.setid)
+                }
                 Text
                 {
                     anchors

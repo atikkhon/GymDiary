@@ -56,6 +56,8 @@ QVariant SetsLogModel::data(const QModelIndex &index, int role) const
         return notice.exercise;   // QString
     case lastset:
         return notice.set;       // QStringList тоже упакуется в QVariant
+    case setid:
+        return notice.set_id;
     default:
         return {};
     }
@@ -67,6 +69,7 @@ QHash<int, QByteArray> SetsLogModel::roleNames() const
     roles.insert(date, "date");
     roles.insert(exercise, "exercise");
     roles.insert(lastset, "lastset");
+    roles.insert(setid, "setid");
     return roles;
 }
 

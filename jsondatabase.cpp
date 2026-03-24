@@ -122,6 +122,80 @@ void JsonDataBase::addSet(const QString &typeOfExercise, const QString &weight, 
         emit dataChanged();
 }
 
+bool JsonDataBase::removeSetFromJson(int set_id)
+{
+    QJsonObject doc_obj;
+
+    //Корректное открытие json в режиме чтения
+    if (!OpenJsonReadOnly(doc_obj))
+        return false;
+
+    bool Found = false;
+
+    QJsonArray trainings = doc_obj.value("trainings").toArray();
+    for (int i = 0; i < trainings.size(); ++i)
+    {
+        if (Found) break;
+        QJsonObject training_obj = trainings[i].toObject();
+        QJsonArray exercises = training_obj.value("exercises").toArray();
+        for (int j = 0; j < exercises.size(); ++j)
+        {
+            if (Found) break;
+            QJsonObject exercise_obj = exercises[j].toObject();
+            QJsonArray sets = exercise_obj.value("sets").toArray();
+            for (int k = 0; k < sets.size(); ++k)
+            {
+                qDebug() << k << "k";
+                QJsonObject setObj = sets[k].toObject();
+                int id  = setObj.value("id").toInt();
+                qDebug() << set_id << "id с qml";
+                qDebug() << id << "id в файле";
+                if (set_id == id)
+                {
+                    Found = true;
+                    qDebug() << "Id совпадают";
+                    sets.removeAt(k);
+                    exercise_obj["sets"] = sets;
+                    exercises[j] = exercise_obj;
+                    training_obj["exercises"] = exercises;
+                    trainings[i] = training_obj;
+                    doc_obj["trainings"] = trainings;
+                    if (sets.isEmpty())
+                    {
+                        qDebug() << "Подходов не осталось";
+                        exercises.removeAt(j);
+                        training_obj["exercises"] = exercises;
+                        trainings[i] = training_obj;
+                        doc_obj["trainings"] = trainings;
+                        if (exercises.isEmpty())
+                        {
+                            qDebug() << "Упражнений не осталось";
+                            trainings.removeAt(i);
+                            doc_obj["trainings"] = trainings;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    }
+    if (!Found) return false;
+
+    QJsonDocument doc(doc_obj);
+    if (OpenJsonWriteOnly(doc))
+    {
+        qDebug() << "вызвалась Write";
+        m_days.clear();
+        ReadJson();
+        emit dataChanged();
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 QVector<TrainingDay> &JsonDataBase::Get_m_days()
 {
     return m_days;

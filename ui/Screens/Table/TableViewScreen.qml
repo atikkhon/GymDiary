@@ -10,18 +10,18 @@ Item {
         anchors.topMargin: 50
         color: "#000033"
 
-        Button
-        {
-            id: recreateJsonButton
-            text: "Очистить дневник"
-            anchors
-            {
-                horizontalCenter: parent.horizontalCenter
-                bottom: myListView.top
-                bottomMargin: 15
-            }
-            onClicked: db.removeJson()
-        }
+        // Button
+        // {
+        //     id: recreateJsonButton
+        //     text: "Очистить дневник"
+        //     anchors
+        //     {
+        //         horizontalCenter: parent.horizontalCenter
+        //         bottom: myListView.top
+        //         bottomMargin: 15
+        //     }
+        //     onClicked: db.removeJson()
+        // }
         ListView
         {
             id: myListView
