@@ -5,12 +5,14 @@
         <file>ui/pictures/deadlift.png</file>
         <file>ui/pictures/paralets.png</file>
         <file>ui/pictures/pullups.png</file>
-        <file>ui/Screens/Main/Files/FiveButtons.qml</file>
         <file>ui/Screens/Main/Files/LabelAndOptions.qml</file>
         <file>ui/Screens/Main/Files/LeftButton.qml</file>
         <file>ui/Screens/Main/Files/RightButton.qml</file>
         <file>ui/Screens/Main/MainScreen.qml</file>
         <file>ui/Screens/Table/TableViewScreen.qml</file>
         <file>database/GymDiary.json</file>
+        <file>ui/Screens/Main/Files/SetsLog.qml</file>
+        <file>ui/Screens/Main/Files/MyButton.qml</file>
+        <file>ui/Screens/Main/Files/FourButtons.qml</file>
     </qresource>
 </RCC>
