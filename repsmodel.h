@@ -10,11 +10,15 @@ class RepsModel : public QObject
 
     Q_PROPERTY(QStringList repsVisibleItems READ repsVisibleItems NOTIFY repsVisibleItemsChanged FINAL)
     Q_PROPERTY(QStringList weightsVisibleItems READ weightsVisibleItems NOTIFY weightsVisibleItemsChanged FINAL)
+    Q_PROPERTY(QStringList exercisesVisibleItems READ exercisesVisibleItems NOTIFY exercisesVisibleItemsChanged FINAL)
+    Q_PROPERTY(QStringList exercisesVisibleNames READ exercisesVisibleNames NOTIFY exercisesVisibleNamesChanged FINAL)
 public:
     explicit RepsModel(QObject *parent = nullptr);
 
     QStringList repsVisibleItems() const;
     QStringList weightsVisibleItems() const;
+    QStringList exercisesVisibleItems() const;
+    QStringList exercisesVisibleNames() const;
 
     Q_INVOKABLE void reps_next();
     Q_INVOKABLE void reps_prev();
@@ -22,16 +26,24 @@ public:
     Q_INVOKABLE void weights_next();
     Q_INVOKABLE void weights_prev();
 
+    Q_INVOKABLE void exercises_next();
+    Q_INVOKABLE void exercises_prev();
+
 signals:
     void repsVisibleItemsChanged();
     void weightsVisibleItemsChanged();
+    void exercisesVisibleItemsChanged();
+    void exercisesVisibleNamesChanged();
 
 private:
     QStringList makeVisibleItems(const QStringList &type, int index) const;
     QStringList m_reps;
     QStringList m_weights;
+    QStringList m_exercises;
+    QStringList m_exercises_names;
     int m_reps_i = 0;
     int m_weights_i = 0;
+    int m_exercises_i = 0;
 };
 
 #endif // REPSMODEL_H

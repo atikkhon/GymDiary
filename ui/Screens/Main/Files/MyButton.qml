@@ -19,14 +19,14 @@ Button
     checkable: myButtonCheckable
 
     icon.source: myButtonIconSource
-    icon.height: myButton.height * 0.7
-    icon.width: myButton.width * 0.7
+    icon.height: myButton.height * 0.6
+    icon.width: myButton.width * 0.6
     icon.color: "white"
 
     font
     {
         bold: true
-        pointSize: 0.1 + Math.min(myButton.height, myButton.width) / 5
+        pointSize: 0.1 + Math.min(myButton.height, myButton.width) / 4
     }
 
     //Когда менятся текст на кнопке(по нажатию < и >)

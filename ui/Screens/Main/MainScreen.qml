@@ -40,14 +40,14 @@ Item {
         textLabel: "Выбор упражнений"
 
         unicueButtonsConfig: [
-            { iconSource: "qrc:/ui/pictures/pullups.png", text: "Подтягивания", displayType: AbstractButton.IconOnly, checkable: true, clickEnable: false },
-            { iconSource: "qrc:/ui/pictures/paralets.png", text: "Брусья", displayType: AbstractButton.IconOnly, checkable: true, clickEnable: false },
-            { iconSource: "qrc:/ui/pictures/quads.png", text: "Присед", displayType: AbstractButton.IconOnly, checkable: true, clickEnable: false },
-            { iconSource: "qrc:/ui/pictures/deadlift.png", text: "Становая", displayType: AbstractButton.IconOnly, checkable: true, clickEnable: false }
+            { iconSource: repsModel.exercisesVisibleItems[0], text: repsModel.exercisesVisibleNames[0], displayType: AbstractButton.IconOnly, checkable: true, clickEnable: false },
+            { iconSource: repsModel.exercisesVisibleItems[1], text: repsModel.exercisesVisibleNames[1], displayType: AbstractButton.IconOnly, checkable: true, clickEnable: false },
+            { iconSource: repsModel.exercisesVisibleItems[2], text: repsModel.exercisesVisibleNames[2], displayType: AbstractButton.IconOnly, checkable: true, clickEnable: false },
+            { iconSource: repsModel.exercisesVisibleItems[3], text: repsModel.exercisesVisibleNames[3], displayType: AbstractButton.IconOnly, checkable: true, clickEnable: false }
         ]
 
-        onLeftClicked: console.log("nothing")
-        onRightClicked: console.log("nothing")
+        onLeftClicked: repsModel.exercises_prev()
+        onRightClicked: repsModel.exercises_next()
 
         onCheckedText: TypeOfExercsise_ => {
             typeOfExercsise = TypeOfExercsise_

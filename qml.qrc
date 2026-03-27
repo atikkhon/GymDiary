@@ -14,5 +14,6 @@
         <file>ui/Screens/Main/Files/SetsLog.qml</file>
         <file>ui/Screens/Main/Files/MyButton.qml</file>
         <file>ui/Screens/Main/Files/FourButtons.qml</file>
+        <file>ui/pictures/pushups.png</file>
     </qresource>
 </RCC>
